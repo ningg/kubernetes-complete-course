@@ -21,38 +21,63 @@
 # Kubernetes 为何而生 - 云发展到一个新阶段
 
 ## IaaS 云解决了哪些问题
-按需购买
-接管硬件资源的运维
-提供可编程接口来管理资源
-提供 SDN，SDS 模拟硬件网络以及存储
+
+IaaS 云，解决了下述问题：
+
+* `按需`购买
+* 接管`硬件`资源的`运维`
+* 提供`可编程接口`来管理资源
+* 提供 SDN、SDS， 模拟硬件`网络`以及`存储`
+
+补充：
+
+* **SDN**：Software Defined Network，**软件定义网络**
+	* `硬件`网络，由`软件`集中式管理
+	* `可编程化`，控制`转发层面`区分开
+	* 不是具体的一项技术，不是具体的协议，而是一个思想、一个框架
+* **SDS**：Software Defined Storage，**软件定义存储**
+	* 硬件中的存储控制器功能，放到软件层面
+	* 包括：卷管理、RAID、数据保护、快照和复制等
+	* 如果存储控制器功能被抽离出来，该功能就可以放在基础架构的任何一部分，例如
+		* 特定的硬件上
+		* hypervisor内部
+		* 虚机内部
 
 ## 特点
-对应用无侵入
-面向资源
 
-> **用户从关注资源的运维转向关注应用的开发运维成本**
+特点：
+
+* **解耦**：对`应用`无侵入
+* **面向资源**：直接分配硬件资源即可
+
+> 用户，从关注`资源的运维`，转向关注`应用的开发`和`应用的运维`成本.
 
 
 ---
 # Kubernetes 为何而生 - 容器的成熟奠定了基础
 
 ## 容器（Docker/Moby） 解决了哪些问题
-应用安装包的标准化（Image）
-应用进程的标准化（Container）
+
+
+1. **安装文件**：应用`安装包`的标准化（`Image`）
+1. **运行环境**：应用`进程`的标准化（`Container`）
 
 
 ## 特点
-单进程标准化
+
+特点：
+
+> `单进程`的**标准化**
 
 
 ---
 # 容器编排系统应运而生
 
-我们需要一种 **面向应用（Application Oriented）** 的系统来降低服务端应用的开发部署和运维成本
+我们需要一种 **面向应用（Application Oriented）** 的系统，来降低服务端应用的`开发`和`部署运维`成本
 
 > We wanted people to be able to **program** for the data center just like they program for their laptop --Ben Hindman
 
-我们再引申一下，从开发延伸到部署运维
+我们再引申一下，从开发延伸到**部署运维**
 
 > We wanted people to be able to manager app for the data center just like they manager app on their laptop
 
@@ -68,15 +93,18 @@
 # Mesos 
 
 ![mesos](images/mesos-arch.jpg)
-[Mesos 架构以及源码浅析](http://jolestar.com/mesos-architecture/)
+
+更多细节：
+
+* [Mesos 架构以及源码浅析](http://jolestar.com/mesos-architecture/)
 
 
 ---
 # Mesos vs Kubernetes
 
-1. 编程框架 vs 运行平台
-2. 资源共享 vs 定义状态
-3. 分布式调度 vs 状态控制器
+1. 编程框架 vs. 运行平台
+2. 资源共享 vs. 定义状态
+3. 分布式调度 vs. 状态控制器
 
 > define a minimal interface that enables efficient resource sharing across frameworks, and otherwise push control of task scheduling and execution to the frameworks -- mesos
 
@@ -86,8 +114,10 @@
 ---
 # Kubernetes 的架构 - 始于编排而超越编排
 
-1. Kubernetes 的部署架构
-2. Kubernetes 的逻辑架构
+Kubernetes 架构：
+
+1. **部署**架构
+2. **逻辑**架构
 
 
 ---
