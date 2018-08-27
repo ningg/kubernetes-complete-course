@@ -22,12 +22,19 @@
 
 ## IaaS 云解决了哪些问题
 
-IaaS 云，解决了下述问题：
-
 * `按需`购买
 * 接管`硬件`资源的`运维`
 * 提供`可编程接口`来管理资源
 * 提供 SDN、SDS， 模拟硬件`网络`以及`存储`
+
+## 特点
+
+* **解耦**：对`应用`无侵入
+* **面向资源**：直接分配硬件资源即可
+
+> 用户，从关注`资源的运维`，转向关注`应用的开发`和`应用的运维`成本.
+
+---
 
 补充：
 
@@ -38,20 +45,7 @@ IaaS 云，解决了下述问题：
 * **SDS**：Software Defined Storage，**软件定义存储**
 	* 硬件中的存储控制器功能，放到软件层面
 	* 包括：卷管理、RAID、数据保护、快照和复制等
-	* 如果存储控制器功能被抽离出来，该功能就可以放在基础架构的任何一部分，例如
-		* 特定的硬件上
-		* hypervisor内部
-		* 虚机内部
-
-## 特点
-
-特点：
-
-* **解耦**：对`应用`无侵入
-* **面向资源**：直接分配硬件资源即可
-
-> 用户，从关注`资源的运维`，转向关注`应用的开发`和`应用的运维`成本.
-
+	* 如果存储控制器功能被抽离出来，该功能就可以放在基础架构的任何一部分，例如，特定的硬件上、hypervisor内部、虚机内部
 
 ---
 # Kubernetes 为何而生 - 容器的成熟奠定了基础
@@ -65,9 +59,7 @@ IaaS 云，解决了下述问题：
 
 ## 特点
 
-特点：
-
-> `单进程`的**标准化**
+> `单进程`的`标准化`
 
 
 ---
@@ -94,9 +86,7 @@ IaaS 云，解决了下述问题：
 
 ![mesos](images/mesos-arch.jpg)
 
-更多细节：
-
-* [Mesos 架构以及源码浅析](http://jolestar.com/mesos-architecture/)
+更多细节： [Mesos 架构以及源码浅析](http://jolestar.com/mesos-architecture/)
 
 
 ---
@@ -106,9 +96,9 @@ IaaS 云，解决了下述问题：
 2. 资源共享 vs. 定义状态
 3. 分布式调度 vs. 状态控制器
 
-> define a minimal interface that enables efficient resource sharing across frameworks, and otherwise push control of task scheduling and execution to the frameworks -- mesos
+> define `a minimal interface` that enables efficient resource sharing across frameworks, and otherwise push control of task scheduling and execution to the frameworks -- mesos
 
-> Kubernetes is not a mere “orchestration system”; it eliminates the need for orchestration. The technical definition of “orchestration” is execution of a defined workflow: do A, then B, then C. In contrast, Kubernetes is comprised of a set of independent, composable control processes that continuously drive current state towards the provided desired state. It shouldn’t matter how you get from A to C: make it so. -- kubernetes
+> `Kubernetes` is not a mere “orchestration system”; it eliminates the need for orchestration. The technical definition of “orchestration” is execution of a defined workflow: do A, then B, then C. In contrast, Kubernetes is comprised of a set of independent, composable control processes that continuously drive current state towards the provided `desired state`. It shouldn’t matter how you get from A to C: make it so. -- kubernetes
 
 
 ---
@@ -116,7 +106,7 @@ IaaS 云，解决了下述问题：
 
 Kubernetes 架构：
 
-1. **部署**架构
+1. **部署**架构：物理架构
 2. **逻辑**架构
 
 
@@ -125,11 +115,25 @@ Kubernetes 架构：
 <img src="images/k8s-arch1.png" height="700"/>
 
 ---
+
+围绕 **物理架构**，几个疑问：
+
+* Master 节点：
+	* scheduler：有什么用？
+	* scheduling actuator：什么作用？
+	* REST：是指所有指令的入口网关，转发调度到 controllers？
+* Worker 节点：
+	* Proxy：是否受 Mater 节点的控制？
+	* kubelet 跟 cAdvisor 之间的关系？
+	* cAdvisor 有什么用？
+
+
+---
 # Kubernetes 逻辑架构
 
 1. Declare，Observe，React
-1. 一个状态存储
-1. 多个控制器
+1. 一个状态存储：etcd
+1. 多个控制器：Controller Manager
 
 
 ---
@@ -137,11 +141,18 @@ Kubernetes 架构：
 <img src="images/k8s-arch2.png" height="700"/>
 
 ---
+关于 Master 节点，几个疑问：
+
+* schedule：什么作用？
+* kubelet：什么作用？
+* kubeproxy：什么作用？
+
+---
 # Kubernetes 的架构优势
 
-1. 自愈 （最终一致）
-1. 组合 （低级组件组合成高级组件）
-1. 面向未来 （API 定义目标，而不是过程）
+1. **自愈** （最终一致）
+1. **组合** （低级组件组合成高级组件）
+1. **面向未来** （API `定义目标`，而不是过程，面向目标的插件式设计）
 
 ```yaml
 apiVersion: vx
@@ -161,8 +172,13 @@ spec:
 ---
 # Kubernetes 的架构劣势
 
-1. 同步操作需求比较难实现
-2. 非状态操作不好实现 
+1. 同步操作：比较难实现
+2. 非状态操作：不好实现 
+
+疑问：
+
+1. 同步操作：是什么？
+2. 非状态操作：是什么？
 
 ---
 # Kubernetes 尚未解决的问题（开放式问题）
