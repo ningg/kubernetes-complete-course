@@ -1,8 +1,3 @@
-<style type="text/css">
-.slide {
-	background: #fff !important;
-}
-</style>
 <!-- $theme: gaia -->
 <!-- $size: 16:9 -->
 <!-- footer: @jolestar -->

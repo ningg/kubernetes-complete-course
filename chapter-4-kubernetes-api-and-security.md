@@ -90,6 +90,12 @@ spec:
     - containerPort: 80
 ```
 
+细节，参考：
+
+* [理解 Kubernetes 对象](https://kubernetes.io/cn/docs/concepts/overview/working-with-objects/kubernetes-objects/)
+* [Kubernetes 配置管理最佳方法](https://www.kubernetes.org.cn/3031.html)
+* [The Kubernetes API](https://kubernetes.io/docs/concepts/overview/kubernetes-api/)
+
 ---
 # Kubernetes API Spec
 
@@ -114,17 +120,21 @@ spec:
 # Label 和 Selector
 
 equality/inequality-based
+
 ```console
 environment = production
 tier != frontend
 ```
+
 set-based
+
 ```console
 environment in (production, qa)
 tier notin (frontend, backend)
 partition
 !partition
 ```
+
 ```
 kubectl get pods -l environment=production,tier=frontend
 ```

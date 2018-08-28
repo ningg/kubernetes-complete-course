@@ -70,6 +70,13 @@ Tables↓/Chains→               | PREROUTING | INPUT | FORWARD | OUTPUT | POST
 **security**                  |            |   ✓   |    ✓    |   ✓    |            
 **nat** (SNAT)                |            |   ✓   |         |        |      ✓     
 
+疑问：
+
+* 上面 Table 的含义，是什么？
+	* mangle：
+	* nat
+	* filter
+
 
 ---
 # Iptables data flow
@@ -96,6 +103,10 @@ iptables -S -t nat
 -A DOCKER ! -i docker0 -p tcp -m tcp --dport 80 -j DNAT --to-destination 172.17.0.2:80
 
 ```
+
+疑问：
+
+* 上面命令的含义，是什么？
 
 ---
 # Iptables example Kubernetes ClusterIP
@@ -272,14 +283,17 @@ spec:
 
 - emptyDir
 - hostPath
-	```yaml
-    volumes:
-    - name: test-volume
-    hostPath:
-      path: /data
-    ```
-- downwardAPI
+
+
+```yaml
+volumes:
+- name: test-volume
+hostPath:
+  path: /data
+```
+
 - secret
+- downwardAPI
 - configMap
 
 ---
@@ -292,6 +306,8 @@ spec:
 
 - projected (secret, downwardAPI, configMap)
 - gitRepo
+
+
 ```yaml
 volumes:
   - name: git-volume
@@ -304,6 +320,8 @@ volumes:
 # Kubernetes Volume
 
 - NFS/CephFS/Glusterfs
+
+
 ```yaml
 volumes:
   - name: nfs-volume
@@ -311,7 +329,10 @@ volumes:
       path: /opt/nfs
       server: nfs.f22 
 ```
+
 - Cloud Disk(GCEPersistentDisk, AWSElasticBlockStore, AzureDisk)
+
+
 ```yaml
 volumes:
   - name: test-volume
@@ -322,6 +343,7 @@ volumes:
 
 ---
 # Kubernetes VolumeMount Option
+
 - mountPath
 - name
 - readOnly
@@ -388,6 +410,7 @@ spec:
     requests:
       storage: 3Gi
 ```
+
 ```yaml
 volumes:
   - name: wordpress-persistent-storage
@@ -409,6 +432,7 @@ metadata:
       storageclass.kubernetes.io/is-default-class: "true"
 provisioner: qingcloud/volume-provisioner
 ```
+
 ```yaml
 apiVersion: storage.k8s.io/v1
 kind: StorageClass

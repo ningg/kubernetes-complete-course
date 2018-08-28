@@ -1,8 +1,3 @@
-<style type="text/css">
-.slide {
-	background: #fff !important;
-}
-</style>
 <!-- $theme: gaia -->
 <!-- $size: 16:9 -->
 <!-- footer: @jolestar -->
@@ -74,6 +69,7 @@ node-role.kubernetes.io/master
 
 ---
 # Affinity
+
 - nodeAffinity
 - podAffinity
 - podAntiAffinity
@@ -82,6 +78,7 @@ node-role.kubernetes.io/master
 
 ---
 # nodeAffinity
+
 - preferredDuringSchedulingIgnoredDuringExecution: **PreferredSchedulingTerm** array
 	- preference: nodeSelectorTerms
 	- weight: 0-100
@@ -276,7 +273,9 @@ spec:
 ```text
 kube-controller-manager --feature-gates=TaintBasedEvictions=true
 ```
+
 ######  内置的 taints
+
 ```text
 node.kubernetes.io/not-ready
 node.alpha.kubernetes.io/unreachable
@@ -286,11 +285,14 @@ node.kubernetes.io/disk-pressure
 node.kubernetes.io/network-unavailable
 node.cloudprovider.kubernetes.io/uninitialized
 ```
+
 ###### DaemonSet Tolerations
+
 ```text
 node.alpha.kubernetes.io/unreachable
 node.kubernetes.io/not-ready
 ```
+
 ---
 # Kubernetes 应用开发案例
 
@@ -342,13 +344,16 @@ sudo route -n add 10.0.0.0/24 $(minikube ip)
 # spring-cloud-kubernetes-examples
 
 - kubernetes-hello-world-example
+
 	```console
     mvn fabric8:run -Pkubernetes
    	kubectl get service
     curl http://$clusterip
     #修改代码 重新执行上面的命令看结果
     ```
+
 - kubernetes-reload-example
+
 	```console
     kubectl apply -f config-map.yml
     mvn fabric8:run -Pkubernetes
@@ -356,9 +361,11 @@ sudo route -n add 10.0.0.0/24 $(minikube ip)
     kubectl edit configmap reload-example
     # 可看到修改后的 configmap 被重新加载
     ```
+
 ---
 # spring-cloud-kubernetes-examples
 - kubernetes-circuitbreaker-ribbon-example
+
 	```console
     cd name-service; mvn fabric8:run -Pkubernetes
     cd greeting-service; mvn fabric8:run -Pkubernetes
