@@ -38,10 +38,22 @@
 
 > **Network address translation (NAT)** is a method of remapping one IP address space into another by modifying network address information in Internet Protocol (IP) datagram packet headers while they are in transit across a traffic routing device.
 
+**NAT** ：
+
+* 地址转换协议，一个机构以一个`公用IP`（Internet Protocol）地址出现在Internet上。
+* 把`内部私有`网络地址（IP地址）转换为`外网 IP`地址的技术。
+* NAT 路由器，在内网、外网边界，进行`IP包`的`报头`内外网 IP 地址转换。
+
 ---
 # Service ClusterIP
 
 <img src="images/services-iptables-overview.svg" height="600"/>
+
+疑问：
+
+* Service ClusterIP 什么含义？
+	* Service 的 type 设置为 ClusterIP，只允许`集群内访问`，外网无法访问 Service
+* 上述示意图中， ServiceIP 的 iptables 什么含义？
 
 ---
 # Iptables

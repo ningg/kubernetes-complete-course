@@ -173,11 +173,11 @@ iptables -P FORWARD ACCEPT
 ---
 # Kubelet
 
-1. 启动方式 系统进程
-1. 配置文件
+1. **启动方式**：系统进程
+1. **配置文件**
     - /lib/systemd/system/kubelet.service
 	- /etc/systemd/system/kubelet.service.d/10-kubeadm.conf
-1. 主要参数
+1. **主要参数**
 	- kubeconfig bootstrap-kubeconfig
 	- pod-manifest-path
 	- allow-privileged(host-network-sources,host-pid-sources,host-ipc-sources)(file,http,api)
@@ -186,14 +186,17 @@ iptables -P FORWARD ACCEPT
 	- cluster-dns=10.96.0.10 --cluster-domain=cluster.local
 	- feature-gates
 
+疑问：
+
+* 如何查看 kubelet 的启动命令？
 
 ---
 # Kube-controller-manager 和 kube-scheduler
 
-1. 启动方式 StaticPod 或 系统进程
-1. 配置文件
+1. **启动方式**： StaticPod 或 系统进程
+1. **配置文件**
     - /etc/kubernetes/manifests/kube-controller-manager.yaml kube-scheduler.yaml
-1. 主要参数（kube-controller-manager）
+1. **主要参数**（kube-controller-manager）
 	- kubeconfig
 	- allocate-node-cidrs
     - cluster-cidr=10.244.0.0/16
@@ -201,14 +204,21 @@ iptables -P FORWARD ACCEPT
     - leader-elect
 	- feature-gates
 
+疑问：
+
+* StaticPod 什么含义？
+	* 直接由当前 Node 的 kubelet 进程管理，不受 apiserver 控制
+	* 细节，参考：[静态 Pods](https://kubernetes.io/cn/docs/tasks/administer-cluster/static-pod/)
+* 如何查看当前 staticPod？
+* 如何查看运行状态中，kube-controller-manager 和 kube-scheduler 的配置参数？
 
 ---
 # Kube-apiserver
 
-1. 启动方式 StaticPod 或 系统进程
-1. 配置文件
+1. **启动方式**： StaticPod 或 系统进程
+1. **配置文件**
     - /etc/kubernetes/manifests/kube-apiserver.yaml
-1. 主要参数
+1. **主要参数**
 	- kubeconfig
 	- insecure-port insecure-bind-address
 	- allow-privileged
@@ -216,20 +226,27 @@ iptables -P FORWARD ACCEPT
 	- authorization-mode=Node,RBAC
 	- etcd-servers
 	- experimental-bootstrap-token-auth=true
-    - service-cluster-ip-range=10.96.0.0/12
+	- service-cluster-ip-range=10.96.0.0/12
 	- feature-gates
 
 
 ---
 # Kube-proxy
 
-1. 启动方式 系统进程 或 DaemonSet
-1. 配置文件
+1. **启动方式**： 系统进程 或 DaemonSet
+1. **配置文件**
     - kubernetes ds yaml
-1. 主要参数
+1. **主要参数**
 	- kubeconfig
 	- masquerade-all
 	- feature-gates
+
+疑问：
+
+* DaemonSet 是什么？跟 StaticPod 之间的差异？
+	* 每一个 Node，都运行一个 Pod 的副本
+	* 参考 [DaemonSet](https://kubernetes.io/docs/concepts/workloads/controllers/daemonset/)
+	* 典型的使用场景：系统监控的 client 等
 
 
 ---
@@ -267,19 +284,19 @@ TaintBasedEvictions=true|false (ALPHA - default=false)
 ---
 # Etcd
 
-1. 启动方式 StaticPod 或 外部集群
-1. 配置文件
+1. **启动方式**：StaticPod 或 外部集群
+1. **配置文件**
     - /etc/kubernetes/manifests/etcd.yaml
-1. 主要参数(参看配置文件)
+1. **主要参数**(参看配置文件)
 	
 
 
 ---
 # Kube-addon-manager
 
-1. 启动方式 StaticPod
-1. 作用 确保系统组件一直存在
-1. 配置文件
+1. **启动方式**：StaticPod
+1. **作用**：确保系统组件一直存在
+1. **配置文件**
     - https://github.com/kubernetes/kubernetes/blob/master/cluster/saltbase/salt/kube-addons/kube-addon-manager.yaml
     - https://github.com/kubernetes/kubernetes/tree/master/cluster/addons/addon-manager
 
@@ -290,7 +307,7 @@ TaintBasedEvictions=true|false (ALPHA - default=false)
 
 <img src="images/k8s-ha.svg" height="600"/>
 
-[https://kubernetes.io/docs/admin/high-availability/](https://kubernetes.io/docs/admin/high-availability/)
+高可用方案，细节参考：[https://kubernetes.io/docs/admin/high-availability/](https://kubernetes.io/docs/admin/high-availability/)
 	
 
 
@@ -307,7 +324,9 @@ TaintBasedEvictions=true|false (ALPHA - default=false)
 
 ---
 # Kubernetes selfhosting
+
 [kubeadm selfhosting.go 源码](https://github.com/kubernetes/kubernetes/blob/master/cmd/kubeadm/app/cmd/phases/selfhosting.go)
+
 1. Load the Static Pod specification from disk (from /etc/kubernetes/manifests)
 2. Extract the PodSpec from that Static Pod specification
 3. Mutate the PodSpec to be compatible with self-hosting (add the right labels, taints, etc. so it can schedule correctly)
@@ -317,6 +336,12 @@ TaintBasedEvictions=true|false (ALPHA - default=false)
 7. The self-hosted containers should now step up and take over.
 8. In order to avoid race conditions, we're still making sure the API /healthz endpoint is healthy
 9. Do that for the kube-apiserver, kube-controller-manager and kube-scheduler in a loop
+
+疑问：
+
+* `selfhosting` 什么含义？
+
+Kubernetes 的控制面组件，APIserver、etcd、controllermanager、scheduler 都是容器化的，并且它们所运行的这套 Kubernetes 就是它自己管的，或者说 APIserver 所在的这个节点，它的 kubelet 就归这个 APIserver 管
 
 ---
 # Kubernetes selfhosting
